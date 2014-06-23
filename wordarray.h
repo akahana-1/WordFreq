@@ -10,7 +10,7 @@ typedef struct word{
 	int count;
 }Word;
 
-char** arrayInsert(char** ary, const char* _word){
+Word** arrayInsert(Word** ary, const char* _word){
 	if(ary == NULL){
 
 	}

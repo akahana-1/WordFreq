@@ -11,6 +11,11 @@ typedef struct wordlist{
 	struct wordlist* next;
 }WordList;
 
+WordList* listInsert(WordList*, const char*);
+int listWordCount(WordList*, const char*);
+int listAllWordCount(WordList*);
+double listWordFreq(WordList*, const char*);
+
 //リストに内容を追加する.
 //param: p リストの要素を示すポインタ.
 //param: _word リストに追加する文字列.
@@ -48,9 +53,19 @@ int listWordCount(WordList* p, const char* _word){
 	}
 }
 
-//リストに存在する全ての要素のcountの合計を返す.
+//リストに保存されている文字列の出現回数の合計を返す.
 //param: p リストの要素を示すポインタ
 int listAllWordCount(WordList* p){
 	if(p == NULL) return 0;
 	else return p->count + listAllWordCount(p->next);
+}
+
+//リストに保存されている特定の文字列の出現頻度を返す.
+//param: p リストの要素を示すポインタ
+//param: word 出現頻度を調べる文字列
+//return 文字列が存在すればその文字列の出現頻度, そうでなければ-1
+double listWordFreq(WordList* p, const char* _word){
+	int s = treeAllWordCount(p), a = treeWordCount(p, _word);
+	if(a < 0) return (double)a;
+	else return a / (double)s;
 }
