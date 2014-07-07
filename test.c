@@ -10,7 +10,7 @@
 
 int main(int argc, char** argv){
 	regex_t preg;
-	char *pattern = "[:alnum:]*";
+	char *pattern = "[[:alnum:]]+";
 	regmatch_t *pmatch;
 	size_t nmatch;
 //	WordTree* btree = NULL;
@@ -32,8 +32,8 @@ int main(int argc, char** argv){
 				for(j = pmatch[i].rm_so; j < pmatch[i].rm_eo;++j){
 					printf("%c", buf[i]);
 				}
+				printf("\n");
 			}
-			printf("\n");
 		}
 //		btree = treeInsert(btree, buf);
 //		array = arrayInsert(array, buf);
