@@ -1,4 +1,4 @@
-//#include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -13,8 +13,9 @@ typedef struct wordlist{
 
 WordList* listInsert(WordList*, const char*);
 int listWordCount(WordList*, const char*);
-int listAllWordCount(WordList*);
+int listAllWordCount(const WordList*);
 double listWordFreq(WordList*, const char*);
+void listAllWordFreq(WordList*, int);
 
 //リストに内容を追加する.
 //param: p リストの要素を示すポインタ.
@@ -55,7 +56,7 @@ int listWordCount(WordList* p, const char* _word){
 
 //リストに保存されている文字列の出現回数の合計を返す.
 //param: p リストの要素を示すポインタ
-int listAllWordCount(WordList* p){
+int listAllWordCount(const WordList* p){
 	if(p == NULL) return 0;
 	else return p->count + listAllWordCount(p->next);
 }
@@ -65,7 +66,18 @@ int listAllWordCount(WordList* p){
 //param: word 出現頻度を調べる文字列
 //return 文字列が存在すればその文字列の出現頻度, そうでなければ-1
 double listWordFreq(WordList* p, const char* _word){
-	int s = treeAllWordCount(p), a = treeWordCount(p, _word);
+	int s = listAllWordCount(p), a = listWordCount(p, _word);
 	if(a < 0) return (double)a;
 	else return a / (double)s;
+}
+
+//リストの各要素の文字列の出現頻度を求める.
+//param: p 要素が格納されているリストのポインタ
+//param: sum リストに格納されている文字列の出現回数の合計
+void listAllWordFreq(WordList* p,int sum){
+	if(p == NULL) return;
+	double f = p->count / (double)sum;
+	printf("%s : %.5f\n", p->word, f * 100);
+	listAllWordFreq(p->next, sum);
+	return;
 }

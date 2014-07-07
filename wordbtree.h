@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -13,9 +14,10 @@ typedef struct bnode{
 }WordTree;
 
 WordTree* treeInsert(WordTree*, const char*);
-int treeWordCount(WordTree*, const char*);
+int treeCountWord(WordTree*, const char*);
 int treeAllWordCount(WordTree*);
 double treeWordFreq(WordTree*, const char*);
+void treeAllWordFreq(WordTree*, int);
 
 //二分探索木に要素を追加する.
 //param: p 二分探索木の要素を示すポインタ
@@ -49,7 +51,7 @@ WordTree* treeInsert(WordTree* p, const char* _word){
 //param: p 二分探索木の要素を示すポインタ
 //param: _word 検索対象の文字列
 //return 文字列が二分探索木内に存在すれば出現回数を, そうでなければ-1を返す.
-int treeWordCount(WordTree* p, const char* _word){
+int treeCountWord(WordTree* p, const char* _word){
 	int res;
 	if(p == NULL) return -1;
 	res = strcmp(p->word, _word);
@@ -57,17 +59,17 @@ int treeWordCount(WordTree* p, const char* _word){
 		return p->count;
 	}
 	else if(res < 0){
-		return treeWordCount(p->left, _word);
+		return treeCountWord(p->left, _word);
 	}
 	else{
-		return treeWordCount(p->right, _word);
+		return treeCountWord(p->right, _word);
 	}
 }
 
 //二分探索木に保存されている文字列の出現回数の合計を返す.
 //param: p 二分探索木の要素を示すポインタ.
 //return そのノードから下位のノードで構成される二分木における合計値.
-int treeAllWordCount(WordList* p){
+int treeAllWordCount(WordTree* p){
 	if(p == NULL) return 0;
 	else return p->count + treeAllWordCount(p->left) + treeAllWordCount(p->right);
 }
@@ -77,7 +79,19 @@ int treeAllWordCount(WordList* p){
 //param: _word 出現頻度を調べる文字列
 //return 文字列が存在すればその文字列の出現頻度, そうでなければ-1
 double treeWordFreq(WordTree* p, const char* _word){
-	int s = treeAllWordCount(p), a = treeWordCount(p, _word);
+	int s = treeAllWordCount(p), a = treeCountWord(p, _word);
 	if(a < 0) return (double)a;
 	else return a / (double)s;
+}
+
+//二分探索木の各要素の文字列の出現頻度を求める.
+//param: p 要素が格納されている二分探索木のポインタ
+//param: sum 二分探索木に格納されている文字列の出現回数の合計
+void treeAllWordFreq(WordTree* p, int sum){
+	if(p == NULL) return;
+	double f = p->count / (double)sum;
+	printf("%s : %.5f\n", p->word, f * 100);
+	treeAllWordFreq(p->left, sum);
+	treeAllWordFreq(p->right, sum);
+	return;
 }
