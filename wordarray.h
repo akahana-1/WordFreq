@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #define MAXLEN 1024
+#define HASHLEN 1023
 
 typedef struct word{
 	//保存する文字列
